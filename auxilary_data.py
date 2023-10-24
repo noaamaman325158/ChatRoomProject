@@ -1,2 +1,4 @@
 #For Future Infrastructure
 
+NUM_CURCURRENCY_CLIENTS = 5
+MAX_SIZE_MESSAGE = 1024

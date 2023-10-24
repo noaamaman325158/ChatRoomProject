@@ -1,6 +1,6 @@
 import socket
+from auxilary_data import MAX_SIZE_MESSAGE
 
-MAX_SIZE_MESSAGE = 1024
 host = 'localhost'
 port = 8080
 

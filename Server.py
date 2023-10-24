@@ -1,8 +1,9 @@
 import socket
 
 from threading import Thread
+from auxilary_data import NUM_CURCURRENCY_CLIENTS,MAX_SIZE_MESSAGE
 
-NUM_CURCURRENCY_CLIENTS = 5
+
 #Details about the socket connection between clients and server
 host = '127.0.0.1'
 port = 8080
@@ -28,7 +29,7 @@ def broadcast(msg, prefix=""):
         x.send(bytes(prefix, "utf-8")+msg)
 
 def handle_clients(conn, address):
-    name = conn.recv(1024).decode()
+    name = conn.recv(MAX_SIZE_MESSAGE).decode()
     welcome = "Welcome "+ name + ". you can type #quit if you ever want to leave the Chat Room"
     conn.recv(bytes(welcome, "utf-8"))
     msg = name + "Has recently Joined the Chat Room"
@@ -37,7 +38,7 @@ def handle_clients(conn, address):
     clients[conn] = name
     #This loop going to run as well as the clients are send messages to the server
     while True:
-        msg = conn.recv(1024)
+        msg = conn.recv(MAX_SIZE_MESSAGE)
         #Check if the client type to quit
         if msg != bytes("#quit", "utf-8"):
             broadcast(msg, name + ":")
