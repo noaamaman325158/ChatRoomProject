@@ -1,12 +1,12 @@
 import socket
 
 from threading import Thread
-from auxilary_data import NUM_CURCURRENCY_CLIENTS,MAX_SIZE_MESSAGE
+from auxilary_data import NUM_CURCURRENCY_CLIENTS,MAX_SIZE_MESSAGE, PORT, HOST_IP
 
 
 #Details about the socket connection between clients and server
-host = '127.0.0.1'
-port = 8080
+host = HOST_IP
+port = PORT
 
 #Storage DS
 
@@ -26,12 +26,13 @@ sock.bind((host, port))
 #Send Message to all the connected clients in out Chat Room
 def broadcast(msg, prefix=""):
     for x in clients:
-        x.send(bytes(prefix, "utf-8")+msg)
+        x.send(bytes(prefix, "utf-8") + msg)
+
 
 def handle_clients(conn, address):
     name = conn.recv(MAX_SIZE_MESSAGE).decode()
     welcome = "Welcome "+ name + ". you can type #quit if you ever want to leave the Chat Room"
-    conn.recv(bytes(welcome, "utf-8"))
+    conn.send(bytes(welcome, "utf-8"))
     msg = name + "Has recently Joined the Chat Room"
     broadcast(bytes(msg, "utf-8"))
     #Store the associated client data inside the Client Dictionary

@@ -2,7 +2,34 @@ import tkinter
 import socket
 from tkinter import *
 from threading import Thread
-from auxilary_data import PORT, HOST_IP
+from auxilary_data import PORT, HOST_IP, MAX_SIZE_MESSAGE
+
+#Implement main methods right below
+def receive():
+    while True:
+        try:
+            msg = sock.recv(MAX_SIZE_MESSAGE).decode('utf-8')
+            #Insert the message inside the GUI component in the end of the box list
+            msg_list_box.insert(tkinter.END, msg)
+        except:
+            print("There is an error while receiving the message")
+
+def send():
+    #Get the content from the UI component of the input
+    msg = my_message.get()
+    #Clean the input box
+    my_message.set("")
+    #Send the message over the socket
+    sock.send(bytes(msg, "utf-8"))
+    if msg == "#quit":
+        #Close the relevant resources in quit scenario
+        sock.close()
+        window.close()
+def on_closing():
+    my_message.set("#quit")
+    send()
+    window.destroy()  # Use this to close the tkinter window
+
 
 #For creating a window via the tkinter module and init the value of the attributes
 window = Tk()
